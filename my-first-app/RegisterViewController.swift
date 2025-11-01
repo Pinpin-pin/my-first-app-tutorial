@@ -1,274 +1,187 @@
 import UIKit
+import RxSwift
+import RxCocoa
 import SnapKit
 
 final class RegisterViewController: UIViewController {
+    public let disposeBag = DisposeBag()
+    private let scrollView = UIScrollView()
+    private let contentView = UIView()
+    private let closeButton = SocialButton(imageName: "close-icon")
+    private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
+    private let firstNameField  = AuthTextField(placeholder: "First Name",  keyboardType: .default,      isSecure: false)
+    private let lastNameField   = AuthTextField(placeholder: "Last Name",   keyboardType: .default,      isSecure: false)
+    private let userNameField   = AuthTextField(placeholder: "User Name",   keyboardType: .default,      isSecure: false)
+    private let emailField      = AuthTextField(placeholder: "Email",       keyboardType: .emailAddress, isSecure: false)
+    private let passwordField   = AuthTextField(placeholder: "Password",    keyboardType: .default,      isSecure: true)
+    private let confirmField    = AuthTextField(placeholder: "Confirm Password", keyboardType: .default, isSecure: true)
+    private let createButton = UIButton(type: .system)
+    private let bottomTextLabel = UILabel()
+    private let loginButton = UIButton(type: .system)
 
-    // MARK: - UI
-    private let scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.keyboardDismissMode = .onDrag
-        return sv
-    }()
-
-    private let contentStack = UIStackView()
-
-    private let logoImageView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "odds-logo"))
-        iv.contentMode = .scaleAspectFit
-        return iv
-    }()
-
-    private let titleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = "Welcome back"
-        lbl.font = .systemFont(ofSize: 28, weight: .bold)
-        lbl.textAlignment = .center
-        return lbl
-    }()
-
-    private let subtitleLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = "Log in to continue"
-        lbl.font = .systemFont(ofSize: 16, weight: .regular)
-        lbl.textColor = .secondaryLabel
-        lbl.textAlignment = .center
-        lbl.numberOfLines = 0
-        return lbl
-    }()
-
-    private let usernameField = AuthTextField(placeholder: "Email or username", keyboardType: .emailAddress, isSecure: false)
-    private let passwordField = AuthTextField(placeholder: "Password", keyboardType: .default, isSecure: true)
-
-    private let forgotButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Forgot password?", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
-        btn.tintColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
-        btn.contentHorizontalAlignment = .trailing
-        return btn
-    }()
-
-    private let loginButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Log In", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        btn.backgroundColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
-        btn.tintColor = .white
-        btn.layer.cornerRadius = 12
-        return btn
-    }()
-
-    private let orLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = "or continue with"
-        lbl.textAlignment = .center
-        lbl.textColor = .secondaryLabel
-        lbl.font = .systemFont(ofSize: 13, weight: .regular)
-        return lbl
-    }()
-
-    private let socialStack = UIStackView()
-
-    private let fbButton = SocialButton(imageName: "facebook-icon")
-    private let googleButton = SocialButton(imageName: "google-icon")
-    private let appleButton = SocialButton(imageName: "apple-icon")
-    // Bottom bar
-    private let bottomBar = UIView()
-    private let bottomTextLabel: UILabel = {
-        let lbl = UILabel()
-        lbl.text = "Don’t have an account?"
-        lbl.textColor = .secondaryLabel
-        lbl.font = .systemFont(ofSize: 15)
-        return lbl
-    }()
-    private let signUpButton: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.setTitle("Sign Up", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
-        btn.tintColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
-        return btn
-    }()
-    
-    private let backgroundView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "login-image-pattern"))
-        iv.contentMode = .scaleAspectFit
-        return iv
-    }()
-
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        setupLayout()
-        setupActions()
+        layoutUI()
+        wireActions()
     }
 
-    // MARK: - Layout
-    private func setupLayout() {
-        // ScrollView
+    private func layoutUI() {
         view.addSubview(scrollView)
-        view.addSubview(backgroundView)
-        backgroundView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview()
-        }
+        view.addSubview(closeButton)
+        view.addSubview(bottomTextLabel)
+        view.addSubview(loginButton)
+
+        scrollView.keyboardDismissMode = .onDrag
         scrollView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(80)
         }
 
-        view.addSubview(bottomBar)
-        bottomBar.backgroundColor = .systemBackground
-        bottomBar.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide)
-            make.height.greaterThanOrEqualTo(50)
+        closeButton.tintColor = .secondaryLabel
+        closeButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(100)
+            make.trailing.equalToSuperview().inset(24)
+            make.width.height.equalTo(44)
         }
 
-        bottomBar.addSubview(bottomTextLabel)
-        bottomBar.addSubview(signUpButton)
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.width.equalTo(scrollView.frameLayoutGuide)
+        }
+
+        [titleLabel, subtitleLabel, firstNameField, lastNameField, userNameField,
+         emailField, passwordField, confirmField, createButton].forEach {
+            contentView.addSubview($0)
+        }
+
+        titleLabel.text = "Let’s Get Started!"
+        titleLabel.font = .systemFont(ofSize: 28, weight: .bold)
+        titleLabel.textAlignment = .center
+
+        subtitleLabel.text = "Create an account on ODDS| to get all features"
+        subtitleLabel.font = .systemFont(ofSize: 16)
+        subtitleLabel.textColor = .secondaryLabel
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.numberOfLines = 0
+
+        createButton.setTitle("Create Account", for: .normal)
+        createButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        createButton.backgroundColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
+        createButton.tintColor = .white
+        createButton.layer.cornerRadius = 12
+
+        bottomTextLabel.text = "Already have an account?"
+        bottomTextLabel.font = .systemFont(ofSize: 15)
+        bottomTextLabel.textColor = .secondaryLabel
+
+        loginButton.setTitle("Login here", for: .normal)
+        loginButton.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+        loginButton.tintColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
+
+        // form layout
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(60)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(titleLabel)
+        }
+
+        firstNameField.snp.makeConstraints { make in
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(24)
+            make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(48)
+        }
+
+        lastNameField.snp.makeConstraints { make in
+            make.top.equalTo(firstNameField)
+            make.leading.equalTo(firstNameField.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().inset(20)
+            make.width.equalTo(firstNameField)
+            make.height.equalTo(48)
+        }
+
+        userNameField.snp.makeConstraints { make in
+            make.top.equalTo(firstNameField.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(48)
+        }
+
+        emailField.snp.makeConstraints { make in
+            make.top.equalTo(userNameField.snp.bottom).offset(12)
+            make.leading.trailing.height.equalTo(userNameField)
+        }
+
+        passwordField.snp.makeConstraints { make in
+            make.top.equalTo(emailField.snp.bottom).offset(12)
+            make.leading.trailing.height.equalTo(userNameField)
+        }
+
+        confirmField.snp.makeConstraints { make in
+            make.top.equalTo(passwordField.snp.bottom).offset(12)
+            make.leading.trailing.height.equalTo(userNameField)
+        }
+
+        createButton.snp.makeConstraints { make in
+            make.top.equalTo(confirmField.snp.bottom).offset(20)
+            make.leading.trailing.equalTo(userNameField)
+            make.height.equalTo(50)
+            make.bottom.equalToSuperview().inset(20)
+        }
 
         bottomTextLabel.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview().offset(-30)
-        }
-        signUpButton.snp.makeConstraints { make in
-            make.centerY.equalTo(bottomTextLabel)
-            make.left.equalTo(bottomTextLabel.snp.right).offset(6)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(16)
+            make.centerX.equalToSuperview().offset(-40)
         }
 
-        contentStack.axis = .vertical
-        contentStack.spacing = 16
-        scrollView.addSubview(contentStack)
-
-        contentStack.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.contentLayoutGuide.snp.top).offset(24)
-            make.leading.equalTo(scrollView.frameLayoutGuide.snp.leading).offset(20)
-            make.trailing.equalTo(scrollView.frameLayoutGuide.snp.trailing).inset(20)
-            make.bottom.equalTo(scrollView.contentLayoutGuide.snp.bottom).inset(24)
-        }
-
-        contentStack.snp.makeConstraints { make in
-            make.width.equalTo(scrollView.frameLayoutGuide.snp.width).inset(20)
-        }
-
-        contentStack.addArrangedSubview(logoImageView)
-        contentStack.setCustomSpacing(24, after: titleLabel)
-        contentStack.addArrangedSubview(titleLabel)
-        contentStack.addArrangedSubview(subtitleLabel)
-        contentStack.setCustomSpacing(24, after: subtitleLabel)
-        contentStack.addArrangedSubview(usernameField)
-        contentStack.addArrangedSubview(passwordField)
-        contentStack.addArrangedSubview(forgotButton)
-        contentStack.addArrangedSubview(loginButton)
-        contentStack.setCustomSpacing(22, after: loginButton)
-        contentStack.addArrangedSubview(orLabel)
-        contentStack.addArrangedSubview(socialStack)
-
-        logoImageView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(100)
-            make.height.equalTo(36)
-        }
-        usernameField.snp.makeConstraints { make in
-            make.height.equalTo(48)
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(16)
-        }
-        passwordField.snp.makeConstraints { make in
-            make.height.equalTo(48)
-        }
         loginButton.snp.makeConstraints { make in
-            make.height.equalTo(50)
+            make.centerY.equalTo(bottomTextLabel)
+            make.leading.equalTo(bottomTextLabel.snp.trailing).offset(6)
         }
+    }
 
-        forgotButton.contentHorizontalAlignment = .trailing
 
-        let socialContainer = UIView()
-        contentStack.addArrangedSubview(socialContainer)
-
-        let icon: CGFloat = 44
-        let gap: CGFloat = 12
-        let totalWidth = icon * 3 + gap * 2
-
-        socialStack.axis = .horizontal
-        socialStack.spacing = gap
-        socialStack.distribution = .fillEqually
-        socialStack.alignment = .center
-
-        // 3) Add buttons
-        socialStack.addArrangedSubview(fbButton)
-        socialStack.addArrangedSubview(googleButton)
-        socialStack.addArrangedSubview(appleButton)
-
-        socialContainer.addSubview(socialStack)
-        socialStack.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.bottom.equalToSuperview()
-            make.height.equalTo(icon)
-            make.width.equalTo(totalWidth)
-        }
+    private func wireActions() {
+        closeButton.rx.tap.subscribe(onNext: {
+            self.onClose()
+        }).disposed(by: disposeBag)
         
-        scrollView.contentInset.bottom = 20
-        scrollView.verticalScrollIndicatorInsets.bottom = 20
-        let bottomSpacer = UIView()
-        bottomSpacer.backgroundColor = .clear
-        contentStack.addArrangedSubview(bottomSpacer)
-        bottomSpacer.snp.makeConstraints { make in
-            make.height.equalTo(20)
-        }
-    }
-
-    // MARK: - Actions
-    private func setupActions() {
-       
-    }
-}
-
-/// Rounded, padded text field for auth screens
-final class AuthTextField: UITextField {
-    init(placeholder: String, keyboardType: UIKeyboardType, isSecure: Bool) {
-        super.init(frame: .zero)
-        borderStyle = .none
-        layer.cornerRadius = 12
-        layer.borderWidth = 1
-        layer.borderColor = UIColor.separator.cgColor
-        backgroundColor = .secondarySystemBackground
-        textColor = .label
-        font = .systemFont(ofSize: 16)
-        self.placeholder = placeholder
-        self.keyboardType = keyboardType
-        self.isSecureTextEntry = isSecure
-
-        let pad = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 10))
-        leftView = pad
-        leftViewMode = .always
-
-        snp.makeConstraints { make in
-            make.height.greaterThanOrEqualTo(44)
-        }
-    }
-
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
-}
-
-/// Filled button with subtle border; uses SF Symbols for icon if provided
-final class SocialButton: UIButton {
-    init(imageName: String) {
-        super.init(frame: .zero)
+        loginButton.rx.tap.subscribe(onNext: {
+            self.onLogin()
+        }).disposed(by: disposeBag)
         
-        let image = UIImage(named: imageName)
-        setImage(image, for: .normal)
-        imageView?.contentMode = .scaleAspectFit
-        clipsToBounds = true
-        setTitle(nil, for: .normal)
+        createButton.rx.tap.subscribe(onNext: {
+            self.onCreate()
+        }).disposed(by: disposeBag)
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        // Make it a perfect circle
-        layer.cornerRadius = bounds.height / 2
+
+    private func onClose() {
+        dismiss(animated: true)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+
+    private func onLogin() {
+        let loginVC = LoginViewController()
+        self.navigationController?.pushViewController(loginVC, animated: true)
+    }
+
+    private func onCreate() {
+        guard let email = emailField.text, email.contains("@"),
+              let p1 = passwordField.text, !p1.isEmpty,
+              p1 == confirmField.text else {
+            showAlert("Please check your email and confirm your password.")
+            return
+        }
+        showAlert("Submitted! (demo)")
+    }
+
+    private func showAlert(_ message: String) {
+        let ac = UIAlertController(title: "Register", message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
 }

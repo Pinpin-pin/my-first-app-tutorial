@@ -15,6 +15,7 @@ class IntroductionViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var registerButton: UIButton!
+    var window: UIWindow?
     public let disposeBag = DisposeBag()
     //    Use PDF for icons/line art that must look sharp at any size (toolbars, onboarding illustrations).
     //    Use PNG/JPEG for photos/bitmaps or artwork with complex gradients/textures.
@@ -74,11 +75,20 @@ class IntroductionViewController: UIViewController {
     }
     
     private func bindAction() {
-        registerButton.rx.tap.subscribe(onNext: {
-            let registerVC = RegisterViewController()
-            registerVC.modalPresentationStyle = .fullScreen
-            self.present(registerVC, animated: true)
-        }).disposed(by: disposeBag)
+        registerButton.rx.tap.observe(on: MainScheduler.instance)
+            .bind { [weak self] in
+                guard let self = self else { return }
+                let vc = RegisterViewController()
+
+                if let nav = self.navigationController {
+                    nav.pushViewController(vc, animated: true)
+                } else {
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+                    self.present(nav, animated: true)
+                }
+            }
+            .disposed(by: disposeBag)
     }
 }
 
