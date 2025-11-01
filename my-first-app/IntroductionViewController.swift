@@ -31,6 +31,13 @@ class IntroductionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+        addLogoImage()
+        bindAction()
+    }
+    
+    
+    private func setupView() {
         collectionView.register(UINib(nibName: "TutorialCollectionCell", bundle: nil),
                                 forCellWithReuseIdentifier: "TutorialCollectionCell")
         collectionView.delegate = self
@@ -46,8 +53,7 @@ class IntroductionViewController: UIViewController {
         }
         
         pageControl.numberOfPages = introImages.count
-        addLogoImage()
-        bindAction()
+        registerButton.tintColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
     }
     
     private func addLogoImage() {

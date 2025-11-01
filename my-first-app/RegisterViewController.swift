@@ -43,6 +43,7 @@ final class RegisterViewController: UIViewController {
         let btn = UIButton(type: .system)
         btn.setTitle("Forgot password?", for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 14, weight: .semibold)
+        btn.tintColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
         btn.contentHorizontalAlignment = .trailing
         return btn
     }()
@@ -51,7 +52,7 @@ final class RegisterViewController: UIViewController {
         let btn = UIButton(type: .system)
         btn.setTitle("Log In", for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
-        btn.backgroundColor = .systemBlue
+        btn.backgroundColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
         btn.tintColor = .white
         btn.layer.cornerRadius = 12
         return btn
@@ -84,7 +85,14 @@ final class RegisterViewController: UIViewController {
         let btn = UIButton(type: .system)
         btn.setTitle("Sign Up", for: .normal)
         btn.titleLabel?.font = .systemFont(ofSize: 15, weight: .semibold)
+        btn.tintColor = UIColor(red: 118/255, green: 157/255, blue: 173/255, alpha: 1)
         return btn
+    }()
+    
+    private let backgroundView: UIImageView = {
+        let iv = UIImageView(image: UIImage(named: "login-image-pattern"))
+        iv.contentMode = .scaleAspectFit
+        return iv
     }()
 
     // MARK: - Lifecycle
@@ -99,6 +107,11 @@ final class RegisterViewController: UIViewController {
     private func setupLayout() {
         // ScrollView
         view.addSubview(scrollView)
+        view.addSubview(backgroundView)
+        backgroundView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+        }
         scrollView.snp.makeConstraints { make in
             make.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide)

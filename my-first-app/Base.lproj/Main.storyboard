@@ -61,6 +61,7 @@
                                     <constraint firstAttribute="height" constant="46" id="kAQ-2F-Gc7"/>
                                     <constraint firstAttribute="width" constant="120" id="nHo-wT-eDx"/>
                                 </constraints>
+                                <color key="tintColor" red="0.34509803919999998" green="0.67843137249999996" blue="0.82745098039999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Register"/>
                             </button>
