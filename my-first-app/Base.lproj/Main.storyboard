@@ -99,10 +99,114 @@
             </objects>
             <point key="canvasLocation" x="1064.885496183206" y="130.98591549295776"/>
         </scene>
+        <!--Frame Base Layout View Controller-->
+        <scene sceneID="DKo-mQ-2R3">
+            <objects>
+                <viewController id="2L3-rT-YNh" customClass="FrameBaseLayoutViewController" customModule="my_first_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SRi-Cg-fYD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5t5-XD-nLh">
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VRb-gC-DBS">
+                                        <rect key="frame" x="6.6666666666666572" y="100" width="380" height="100"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="100" id="PO5-2w-UHj"/>
+                                            <constraint firstAttribute="width" constant="380" id="mL1-Ly-bWf"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemCyanColor"/>
+                                <constraints>
+                                    <constraint firstItem="VRb-gC-DBS" firstAttribute="centerX" secondItem="5t5-XD-nLh" secondAttribute="centerX" id="mS9-qc-Kva"/>
+                                    <constraint firstItem="VRb-gC-DBS" firstAttribute="top" secondItem="5t5-XD-nLh" secondAttribute="top" constant="100" id="zEF-cT-3sh"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="u7q-aI-IYh"/>
+                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                        <constraints>
+                            <constraint firstItem="u7q-aI-IYh" firstAttribute="bottom" secondItem="5t5-XD-nLh" secondAttribute="bottom" id="DR6-6R-EEI"/>
+                            <constraint firstAttribute="trailing" secondItem="5t5-XD-nLh" secondAttribute="trailing" id="Dpq-xs-P74"/>
+                            <constraint firstItem="5t5-XD-nLh" firstAttribute="top" secondItem="u7q-aI-IYh" secondAttribute="top" id="W7g-0f-nmN"/>
+                            <constraint firstItem="5t5-XD-nLh" firstAttribute="leading" secondItem="SRi-Cg-fYD" secondAttribute="leading" id="mBl-6c-yJL"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fLQ-yC-KJ3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2472.5190839694656" y="130.98591549295776"/>
+        </scene>
+        <!--Frame Base Layout View Controller-->
+        <scene sceneID="WA3-MG-ZkW">
+            <objects>
+                <viewController id="FGe-UK-tCL" customClass="FrameBaseLayoutViewController" customModule="my_first_app" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="rSv-2B-BSy">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="K8P-6o-1bz">
+                                <rect key="frame" x="0.0" y="118" width="393" height="666"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pAq-S2-39p">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="166.66666666666666"/>
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o0W-Ou-DSS">
+                                        <rect key="frame" x="0.0" y="166.66666666666669" width="393" height="166.33333333333331"/>
+                                        <color key="backgroundColor" systemColor="systemTealColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Zg-xq-dDV">
+                                        <rect key="frame" x="0.0" y="333" width="393" height="166.66666666666663"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Icu-Ho-HQi">
+                                        <rect key="frame" x="0.0" y="499.66666666666657" width="393" height="166.33333333333331"/>
+                                        <color key="backgroundColor" systemColor="systemYellowColor"/>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.86666666670000003" green="0.96078431369999995" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="dsU-6b-9Qa"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="K8P-6o-1bz" firstAttribute="top" secondItem="dsU-6b-9Qa" secondAttribute="top" id="9Sh-bh-7Wn"/>
+                            <constraint firstItem="dsU-6b-9Qa" firstAttribute="trailing" secondItem="K8P-6o-1bz" secondAttribute="trailing" id="emN-hq-54p"/>
+                            <constraint firstItem="dsU-6b-9Qa" firstAttribute="bottom" secondItem="K8P-6o-1bz" secondAttribute="bottom" id="k9Y-Xo-exr"/>
+                            <constraint firstItem="K8P-6o-1bz" firstAttribute="leading" secondItem="dsU-6b-9Qa" secondAttribute="leading" id="voG-3t-Ev8"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HuS-Xe-tbG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3585" y="131"/>
+        </scene>
     </scenes>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemCyanColor">
+            <color red="0.1960784314" green="0.67843137249999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.8980392157" green="0.8980392157" blue="0.91764705879999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.18823529410000001" green="0.69019607839999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemYellowColor">
+            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

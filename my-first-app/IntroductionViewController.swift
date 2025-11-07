@@ -78,7 +78,7 @@ class IntroductionViewController: UIViewController {
         registerButton.rx.tap.observe(on: MainScheduler.instance)
             .bind { [weak self] in
                 guard let self = self else { return }
-                let vc = RegisterViewController()
+                let vc = IntroductionWithCodeViewController()
 
                 if let nav = self.navigationController {
                     nav.pushViewController(vc, animated: true)
